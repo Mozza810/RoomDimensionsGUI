@@ -1,9 +1,11 @@
 #ifndef ROOMDIMENSIONSGUI_H
 #define ROOMDIMENSIONSGUI_H
 
+// Local includes.
 #include <QMainWindow>
 #include <QPalette>
-
+#include <QDirIterator>
+#include <QPixmap>
 
 namespace Ui {
 class RoomDimensionsGUI;
@@ -46,41 +48,55 @@ private:
      * This is where calculations occur for area.
      * @return double
      */
-    double areaCalculations(QString valueAreaString);
+    double areaCalculations();
 
     /**
      * This is where calculations occur for volume.
      * @return double
      */
-    double volumeCalculations(QString valueVolumeString);
+    double volumeCalculations();
 
     /**
      * This is where calculations occur for amount of paint required.
      * @return double
      */
-    double paintCalculations(QString valuePaintString);
+    double paintCalculations();
 
-public slots:
+private slots:
 
     /**
      * This triggers signal area button clicked.
+     * Return bool.
      */
-    bool buttonAreaClicked(QString &valueAreaString);
+    bool buttonAreaClicked();
 
     /**
      * This triggers signal volume button clicked.
+     * Return bool.
      */
-    bool buttonVolumeClicked(QString &valueVolumeString);
+    bool buttonVolumeClicked();
 
     /**
      * This triggers signal paint button clicked.
+     * Return bool.
      */
-    bool buttonPaintClicked(QString &valuePaintString);
+    bool buttonPaintClicked();
+
+    /**
+     * When cancel clicked buttons deactivated resets.
+     * Return bool.
+     */
+    bool buttonCancelClicked();
+
+    /**
+     * This fetches file paths for backgrounds and iterates through them.
+     */
+    void populateBackgroundChange();
 
     /**
      * This changes the background colour for users.
      */
-    bool backgroundColourChange();
+    void backgroundColourChange(const QString &file_path);
 
 };
 

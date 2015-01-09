@@ -21,4 +21,5 @@ FORMS    += RoomDimensionsGUI.ui
 
 OTHER_FILES +=
 
-RESOURCES +=
+RESOURCES += \
+    backgrounds.qrc

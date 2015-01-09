@@ -1,6 +1,7 @@
 #include "RoomDimensionsGUI.h"
 #include "ui_RoomDimensionsGUI.h"
 
+// Local includes.
 #include <QResource>
 #include <QDir>
 
@@ -10,10 +11,12 @@ RoomDimensionsGUI::RoomDimensionsGUI(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    connect(ui->pushButton_area, SIGNAL(clicked()), SLOT(buttonAreaClicked(QString &valueAreaString)));
-    connect(ui->pushButton_volume, SIGNAL(clicked()), SLOT(buttonVolumeClicked(QString &valueVolumeString)));
-    connect(ui->pushButton_paint, SIGNAL(clicked()), SLOT(buttonPaintClicked(QString &valuePaintString)));
-    connect(ui->pushButton_background_colour, SIGNAL(clicked()), SLOT(backgroundColourChange()));
+    QObject::connect(ui->pushButton_area, &QPushButton::clicked, &RoomDimensionsGUI::buttonAreaClicked);
+    QObject::connect(ui->pushButton_volume, &QPushButton::clicked, &RoomDimensionsGUI::buttonVolumeClicked);
+    QObject::connect(ui->pushButton_paint, &QPushButton::clicked, &RoomDimensionsGUI::buttonPaintClicked);
+    QObject::connect(ui->pushButton_cancel_delete, &QPushButton::clicked, &RoomDimensionsGUI::buttonCancelClicked);
+    QObject::connect(ui->pushButton_background_colour, &QPushButton::clicked, &RoomDimensionsGUI::populateBackgroundChange);
+
 }
 
 //------------------------------------------------------------------------------------------------//
@@ -59,7 +62,7 @@ double RoomDimensionsGUI::userInputWidth()
 
 //------------------------------------------------------------------------------------------------//
 
-double RoomDimensionsGUI::areaCalculations(QString valueAreaString)
+double RoomDimensionsGUI::areaCalculations()
 {
     // Getting the user input values.
     double width = userInputWidth();
@@ -68,16 +71,15 @@ double RoomDimensionsGUI::areaCalculations(QString valueAreaString)
 
     // Setting double value (area) as QString.
     double valueAreaDouble = area;
-    valueAreaString = QString::number(area);
 
-return valueAreaDouble;
+    return valueAreaDouble;
 }
 
 //------------------------------------------------------------------------------------------------//
 
 //------------------------------------------------------------------------------------------------//
 
-double RoomDimensionsGUI::volumeCalculations(QString valueVolumeString)
+double RoomDimensionsGUI::volumeCalculations()
 {
     // Getting the user input values.
     double height = userInputHeight();
@@ -89,7 +91,6 @@ double RoomDimensionsGUI::volumeCalculations(QString valueVolumeString)
 
     // Setting double value (volume) as QString.
     double valueVolumeDouble = volume;
-    valueVolumeString = QString::number(volume);
 
 return valueVolumeDouble;
 }
@@ -98,7 +99,7 @@ return valueVolumeDouble;
 
 //------------------------------------------------------------------------------------------------//
 
-double RoomDimensionsGUI::paintCalculations(QString valuePaintString)
+double RoomDimensionsGUI::paintCalculations()
 {
     // Getting the user input values.
     double height = userInputHeight();
@@ -107,10 +108,11 @@ double RoomDimensionsGUI::paintCalculations(QString valuePaintString)
     // Calculating paint needed in gallons from width and height.
     double paint(height * width);
     double paintGallons(paint / 350);
+    // Convert paint gallons to liters.
+    double paintLiters(paintGallons * 4.54609);
 
     // Setting double value (paintGallons) as QString.
-    double valuePaintDouble = paintGallons;
-    valuePaintString = QString::number(paintGallons);
+    double valuePaintDouble = paintLiters;
 
 return valuePaintDouble;
 }
@@ -119,51 +121,53 @@ return valuePaintDouble;
 
 //------------------------------------------------------------------------------------------------//
 
-bool RoomDimensionsGUI::backgroundColourChange()
-{   
+void RoomDimensionsGUI::backgroundColourChange(const QString &file_path)
+{
     // Changing backround colour.
-    QPixmap bkgnd("C:/Users/jmorris/Workspace/RoomDimensionsGUI/backgrounds/background1.png");
+    QPixmap bkgnd(file_path);
     bkgnd = bkgnd.scaled(this->size(), Qt::IgnoreAspectRatio);
-    QPalette palette;
-    palette.setBrush(QPalette::Background, bkgnd);
-    this->setPalette(palette); 
+//    this->setAttribute(Qt::WA_TranslucentBackground);
+//    this->centralWidget()->set
 
-//    QDir backgrounds[] = {
-//    // Set path for pictures called backgrounds
-//    background1(QDir("C:/Users/jmorris/Workspace/RoomDimensionsGUI/backgrounds/background1.png")),
-//    background2(QDir("C:/Users/jmorris/Workspace/RoomDimensionsGUI/backgrounds/background1.png")),
-//    background3(QDir("C:/Users/jmorris/Workspace/RoomDimensionsGUI/backgrounds/background1.png")),
-//    background4(QDir("C:/Users/jmorris/Workspace/RoomDimensionsGUI/backgrounds/background1.png")),
-//    background5(QDir("C:/Users/jmorris/Workspace/RoomDimensionsGUI/backgrounds/background1.png")),
-//    background6(QDir("C:/Users/jmorris/Workspace/RoomDimensionsGUI/backgrounds/background1.png")),
-//    background7(QDir("C:/Users/jmorris/Workspace/RoomDimensionsGUI/backgrounds/background1.png")),
-//    background8(QDir("C:/Users/jmorris/Workspace/RoomDimensionsGUI/backgrounds/background1.png")),
-//    background9(QDir("C:/Users/jmorris/Workspace/RoomDimensionsGUI/backgrounds/background1.png")),
-//    background10(QDir("C:/Users/jmorris/Workspace/RoomDimensionsGUI/backgrounds/background1.png")),
-//    background11(QDir("C:/Users/jmorris/Workspace/RoomDimensionsGUI/backgrounds/background1.png")),
-//    };
+}
+//------------------------------------------------------------------------------------------------//
 
-//    for (background : backgrounds)
-//    {
+//------------------------------------------------------------------------------------------------//
 
-//    }
+void RoomDimensionsGUI::populateBackgroundChange()
+{
+    // Iterate over the backgrounds available in the background resource file and fetch their file paths.
+    QDirIterator iter(":/backgrounds", QDirIterator::Subdirectories);
+    std::vector<QString> background_filepaths;
+    while(iter.hasNext())
+    {
+        iter.next();
+        background_filepaths.push_back(iter.filePath());
+    }
 
-    return true;
+    // Choose a random background filepath from the vector of QStrings.
+    // Look for how to choose a random number from x-y (x is 0; y is the size of the vector)
+    int random_number = (qrand() % (background_filepaths.begin() - background_filepaths.end())) + background_filepaths.end();
+
+    // now you have your random number (which is a valid index of "background_filepaths) do background_filepahs.at(NUMBER_YOU_CHOSE)
+    background_filepaths.at(random_number);
+
+    // Call backgroundColourChange and pass the string that was chosen.
+    backgroundColourChange(background_filepaths);
 }
 
 //------------------------------------------------------------------------------------------------//
 
 //------------------------------------------------------------------------------------------------//
 
-bool RoomDimensionsGUI::buttonAreaClicked(QString &valueAreaString)
+bool RoomDimensionsGUI::buttonAreaClicked()
 {
-    // Emit signal for UI push button is clicked.
-    emit ui->pushButton_area->clicked();
-
     // Setting text to outcome and the correct units.
-    ui->lineEdit_Outcome->setText(valueAreaString);
-    ui->lineEdit_Warning->setText("");
-    ui->label_Units->setText("cm2");
+    ui->lineEdit_Outcome->setText(QString::number(areaCalculations()));
+    ui->lineEdit_warning->setText("");
+    ui->label_Units->setText("cm²");
+    ui->pushButton_cancel_delete->isHidden();
+    ui->pushButton_delete_area->isHidden();
     return true;
 
 }
@@ -172,15 +176,14 @@ bool RoomDimensionsGUI::buttonAreaClicked(QString &valueAreaString)
 
 //------------------------------------------------------------------------------------------------//
 
-bool RoomDimensionsGUI::buttonVolumeClicked(QString &valueVolumeString)
+bool RoomDimensionsGUI::buttonVolumeClicked()
 {
-    // Emit signal for UI push button is clicked.
-    emit ui->pushButton_volume->clicked();
-
     // Setting unit text box to volume cm3.
-    ui->label_Units->setText("cm3");
-    ui->lineEdit_Warning->setText("");
-    ui->lineEdit_Outcome->setText(valueVolumeString);
+    ui->label_Units->setText("cm³");
+    ui->lineEdit_warning->setText("");
+    ui->lineEdit_Outcome->setText(QString::number(volumeCalculations()));
+    ui->pushButton_cancel_delete->isHidden();
+    ui->pushButton_delete_area->isHidden();
     return true;
 }
 
@@ -188,18 +191,38 @@ bool RoomDimensionsGUI::buttonVolumeClicked(QString &valueVolumeString)
 
 //------------------------------------------------------------------------------------------------//
 
-bool RoomDimensionsGUI::buttonPaintClicked(QString &valuePaintString)
+bool RoomDimensionsGUI::buttonPaintClicked()
 {
-    // Emit signal for UI push button is clicked.
-    emit ui->pushButton_paint->clicked();
-
     // Setting UI text to correct units and setting a warning for user.
     ui->label_Units->setText("Gallons");
-    ui->lineEdit_Warning->setText("Warning: Actual results may depend on user preferences!");
-    ui->lineEdit_Outcome->setText(valuePaintString);
+    ui->lineEdit_warning->setText("Warning: Actual results may depend on user preferences!");
+    ui->lineEdit_Outcome->setText(QString::number(paintCalculations()));
+    // Enables buttons needed.
+    ui->pushButton_delete_area->setEnabled(true);
+    ui->pushButton_delete_area->setEnabled(true);
+    ui->pushButton_cancel_delete->setEnabled(true);
     return true;
 }
 
 //------------------------------------------------------------------------------------------------//
+
+//------------------------------------------------------------------------------------------------//
+
+bool RoomDimensionsGUI::buttonCancelClicked()
+{
+    // Enables buttons needed.
+    ui->pushButton_cancel_delete->setEnabled(false);
+    ui->pushButton_delete_area->setEnabled(false);
+
+    ///@note alternative to disabling is hiding
+//    ui->pushButton_delete_area->setVisible(); //bool
+//    ui->pushButton_delete_area->show();
+//    ui->pushButton_delete_area->hide();
+
+    ui->label_Units->setText("");
+    ui->lineEdit_warning->setText("");
+    ui->lineEdit_Outcome->setText("");
+    return true;
+}
 
 //------------------------------------------------------------------------------------------------//
