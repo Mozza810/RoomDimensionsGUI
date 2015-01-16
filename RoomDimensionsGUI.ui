@@ -52,19 +52,6 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_6">
       <item>
-       <widget class="QPushButton" name="pushButton_background_colour">
-        <property name="minimumSize">
-         <size>
-          <width>150</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Change background</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <spacer name="horizontalSpacer_4">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -78,7 +65,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_cancel_delete">
+       <widget class="QPushButton" name="pushButton_Cancel_Delete">
         <property name="enabled">
          <bool>false</bool>
         </property>
@@ -98,7 +85,7 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <widget class="QLabel" name="label_Enter_length">
+       <widget class="QLabel" name="label_Enter_Length">
         <property name="minimumSize">
          <size>
           <width>90</width>
@@ -265,7 +252,7 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QPushButton" name="pushButton_area">
+       <widget class="QPushButton" name="pushButton_Area">
         <property name="minimumSize">
          <size>
           <width>125</width>
@@ -278,7 +265,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_paint">
+       <widget class="QPushButton" name="pushButton_Paint">
         <property name="minimumSize">
          <size>
           <width>125</width>
@@ -291,7 +278,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_volume">
+       <widget class="QPushButton" name="pushButton_Volume">
         <property name="minimumSize">
          <size>
           <width>125</width>
@@ -339,7 +326,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_delete_area">
+       <widget class="QPushButton" name="pushButton_Delete_Area">
         <property name="enabled">
          <bool>false</bool>
         </property>
@@ -355,7 +342,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_coat_paint">
+       <widget class="QPushButton" name="pushButton_Coat_Paint">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -371,7 +358,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_delete_coat_paint">
+       <widget class="QPushButton" name="pushButton_Delete_Coat_Paint">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -447,11 +434,6 @@
      <height>21</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuSave">
-    <property name="title">
-     <string>Save</string>
-    </property>
-   </widget>
    <widget class="QMenu" name="menuOpen">
     <property name="title">
      <string>Open</string>
@@ -461,14 +443,31 @@
     <property name="title">
      <string>Settings</string>
     </property>
+    <addaction name="actionUser_room_prefrences"/>
+    <addaction name="actionChange_background"/>
    </widget>
-   <addaction name="menuSave"/>
+   <widget class="QMenu" name="menuSave_2">
+    <property name="title">
+     <string>Save</string>
+    </property>
+   </widget>
+   <addaction name="menuSave_2"/>
    <addaction name="menuOpen"/>
    <addaction name="menuSettings"/>
   </widget>
   <action name="actionRdgrdgrd">
    <property name="text">
     <string>rdgrdgrd</string>
+   </property>
+  </action>
+  <action name="actionUser_room_prefrences">
+   <property name="text">
+    <string>User room prefrences</string>
+   </property>
+  </action>
+  <action name="actionChange_background">
+   <property name="text">
+    <string>Change background</string>
    </property>
   </action>
  </widget>

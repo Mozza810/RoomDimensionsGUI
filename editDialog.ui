@@ -30,14 +30,14 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QLabel" name="label_name_wall">
+      <widget class="QLabel" name="label_Name_Wall">
        <property name="text">
         <string>Name wall</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_name_wall">
+      <widget class="QLineEdit" name="lineEdit_Name_Wall">
        <property name="maxLength">
         <number>20</number>
        </property>
@@ -61,14 +61,14 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <widget class="QLabel" name="label_save_location">
+      <widget class="QLabel" name="label_Save_Location">
        <property name="text">
         <string>Save location</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_save_location">
+      <widget class="QLineEdit" name="lineEdit_Save_Location">
        <property name="enabled">
         <bool>true</bool>
        </property>
@@ -78,7 +78,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_change_save_area">
+      <widget class="QPushButton" name="pushButton_Change_Save_Area">
        <property name="text">
         <string>Change</string>
        </property>
@@ -102,7 +102,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_cancel">
+      <widget class="QPushButton" name="pushButton_Cancel">
        <property name="minimumSize">
         <size>
          <width>125</width>
@@ -115,7 +115,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_save">
+      <widget class="QPushButton" name="pushButton_Save">
        <property name="minimumSize">
         <size>
          <width>125</width>

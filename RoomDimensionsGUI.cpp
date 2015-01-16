@@ -14,18 +14,18 @@ RoomDimensionsGUI::RoomDimensionsGUI(QWidget *parent) :
     ui->setupUi(this);
 
     // Set coat buttons to not visible at beginning of program.
-    ui->pushButton_coat_paint->setVisible(false);
-    ui->pushButton_delete_coat_paint->setVisible(false);
+    ui->pushButton_Coat_Paint->setVisible(false);
+    ui->pushButton_Delete_Coat_Paint->setVisible(false);
 
     // QObject Connects.
-    QObject::connect(ui->pushButton_area, &QPushButton::clicked, this, &RoomDimensionsGUI::buttonAreaClicked);
-    QObject::connect(ui->pushButton_volume, &QPushButton::clicked, this, &RoomDimensionsGUI::buttonVolumeClicked);
-    QObject::connect(ui->pushButton_paint, &QPushButton::clicked, this, &RoomDimensionsGUI::buttonPaintClicked);
-    QObject::connect(ui->pushButton_cancel_delete, &QPushButton::clicked, this, &RoomDimensionsGUI::buttonCancelClicked);
-    QObject::connect(ui->pushButton_background_colour, &QPushButton::clicked, this, &RoomDimensionsGUI::populateBackgroundChange);
-    QObject::connect(ui->pushButton_delete_area, &QPushButton::clicked, this, &RoomDimensionsGUI::buttonAreaDeleteClicked);
-    QObject::connect(ui->pushButton_coat_paint, &QPushButton::clicked, this, &RoomDimensionsGUI::buttonCoatAddClicked);
-    QObject::connect(ui->pushButton_coat_paint, &QPushButton::clicked, this, &RoomDimensionsGUI::buttonCoatDeleteClicked);
+    QObject::connect(ui->pushButton_Area, &QPushButton::clicked, this, &RoomDimensionsGUI::buttonAreaClicked);
+    QObject::connect(ui->pushButton_Volume, &QPushButton::clicked, this, &RoomDimensionsGUI::buttonVolumeClicked);
+    QObject::connect(ui->pushButton_Paint, &QPushButton::clicked, this, &RoomDimensionsGUI::buttonPaintClicked);
+    QObject::connect(ui->pushButton_Cancel_Delete, &QPushButton::clicked, this, &RoomDimensionsGUI::buttonCancelClicked);
+    QObject::connect(ui->actionChange_background, &QAction::triggered, this, &RoomDimensionsGUI::populateBackgroundChange);
+    QObject::connect(ui->pushButton_Delete_Area, &QPushButton::clicked, this, &RoomDimensionsGUI::buttonAreaDeleteClicked);
+    QObject::connect(ui->pushButton_Coat_Paint, &QPushButton::clicked, this, &RoomDimensionsGUI::buttonCoatAddClicked);
+    QObject::connect(ui->pushButton_Delete_Coat_Paint, &QPushButton::clicked, this, &RoomDimensionsGUI::buttonCoatDeleteClicked);
 
     // Data validation.
     ui->line_Edit_Depth->setValidator(new QDoubleValidator(0, 1000, 2, this));
@@ -142,8 +142,8 @@ double RoomDimensionsGUI::deleteCalculations()
     double paint(height * width);
     double paintCoverage(10*10);
     double paintLitres(paint / paintCoverage);
+    double valuePaintDeleteDouble(paintLitres*10);
     double valueDeletedFrom(ui->lineEdit_Outcome->text().toDouble());
-    double valuePaintDeleteDouble(paintLitres);
     // Delete the value given from the outcome.
     double valueAreaDeletedDouble(valueDeletedFrom - valuePaintDeleteDouble);
 
@@ -156,10 +156,17 @@ return valueAreaDeletedDouble;
 
 double RoomDimensionsGUI::paintCoatCalculations()
 {
-    // Get outcome from line edit.
-    double outcome(paintCalculations());
+    // Getting user input values.
+    double height = userInputHeight();
+    double width = userInputWidth();
+    // Calculating paint needed in gallons from width and height.
+    double paint(height * width);
+    double paintCoverage(10*10);
+    double paintLitres(paint / paintCoverage);
+    double valuePaintCoatDouble(paintLitres*10);
     // Multiply this by two
-    double valueCoatDouble(outcome + outcome);
+    double valueCoatDouble(valuePaintCoatDouble + valuePaintCoatDouble);
+
 return valueCoatDouble;
 }
 
@@ -169,10 +176,17 @@ return valueCoatDouble;
 
 double RoomDimensionsGUI::paintCoatDeleteCalculations()
 {
-    // Get outcome from line edit.
-    double outcomeRemove(paintCalculations());
-    // Multiply this by two
-    double valueCoatDeleteDouble(outcomeRemove - outcomeRemove);
+    // Getting user input values.
+    double height = userInputHeight();
+    double width = userInputWidth();
+    // Calculating paint needed in gallons from width and height.
+    double paint(height * width);
+    double paintCoverage(10*10);
+    double paintLitres(paint / paintCoverage);
+    double CoatDeleteDouble(paintLitres*10);
+    // Remove This from initial value
+    double valueCoatDeleteDouble(CoatDeleteDouble - CoatDeleteDouble);
+
 return valueCoatDeleteDouble;
 }
 
@@ -241,10 +255,10 @@ bool RoomDimensionsGUI::buttonAreaClicked()
     ui->lineEdit_warning->setText("");
     ui->label_Units->setText("cm²");
     ui->lineEdit_Outcome->setText(QString::number(areaCalculations()));
-    ui->pushButton_delete_area->setEnabled(false);
-    ui->pushButton_cancel_delete->setEnabled(false);
-    ui->pushButton_coat_paint->setVisible(false);
-    ui->pushButton_delete_coat_paint->setVisible(false);
+    ui->pushButton_Delete_Area->setEnabled(false);
+    ui->pushButton_Cancel_Delete->setEnabled(false);
+    ui->pushButton_Coat_Paint->setVisible(false);
+    ui->pushButton_Delete_Coat_Paint->setVisible(false);
     return true;
 
 }
@@ -259,10 +273,10 @@ bool RoomDimensionsGUI::buttonVolumeClicked()
     ui->label_Units->setText("cm³");
     ui->lineEdit_warning->setText("");
     ui->lineEdit_Outcome->setText(QString::number(volumeCalculations()));
-    ui->pushButton_delete_area->setEnabled(false);
-    ui->pushButton_cancel_delete->setEnabled(false);
-    ui->pushButton_coat_paint->setVisible(false);
-    ui->pushButton_delete_coat_paint->setVisible(false);
+    ui->pushButton_Delete_Area->setEnabled(false);
+    ui->pushButton_Cancel_Delete->setEnabled(false);
+    ui->pushButton_Coat_Paint->setVisible(false);
+    ui->pushButton_Delete_Coat_Paint->setVisible(false);
     return true;
 }
 
@@ -274,14 +288,14 @@ bool RoomDimensionsGUI::buttonPaintClicked()
 {
     // Setting UI text to correct units and setting a warning for user.
     ui->label_Units->setText("Litres");
-    ui->lineEdit_warning->setText("Warning: Actual results may depend on user preferences!");
+    ui->lineEdit_warning->setText("Warning: Actual results may depend on user preferences! (Coverage = 10cm²).");
     ui->lineEdit_Outcome->setText(QString::number(paintCalculations()));
     // Enables buttons needed.
-    ui->pushButton_delete_area->setEnabled(true);
-    ui->pushButton_cancel_delete->setEnabled(true);
-    ui->pushButton_delete_area->setVisible(true);
-    ui->pushButton_coat_paint->setVisible(true);
-    ui->pushButton_delete_coat_paint->setVisible(true);
+    ui->pushButton_Delete_Area->setEnabled(true);
+    ui->pushButton_Cancel_Delete->setEnabled(true);
+    ui->pushButton_Delete_Area->setVisible(true);
+    ui->pushButton_Coat_Paint->setVisible(true);
+    ui->pushButton_Delete_Coat_Paint->setVisible(true);
     return true;
 }
 
@@ -292,19 +306,18 @@ bool RoomDimensionsGUI::buttonPaintClicked()
 bool RoomDimensionsGUI::buttonCancelClicked()
 {
     // Enables buttons needed.
-    ui->pushButton_cancel_delete->setEnabled(false);
-    ui->pushButton_delete_area->setEnabled(false);
-    ui->pushButton_coat_paint->setVisible(false);
-    ui->pushButton_delete_coat_paint->setVisible(false);
+    ui->pushButton_Cancel_Delete->setEnabled(false);
+    ui->pushButton_Delete_Area->setEnabled(false);
+    ui->pushButton_Coat_Paint->setVisible(false);
+    ui->pushButton_Delete_Coat_Paint->setVisible(false);
 
     ///@note alternative to disabling is hiding
-//    ui->pushButton_delete_area->setVisible(); //bool
-//    ui->pushButton_delete_area->show();
-//    ui->pushButton_delete_area->hide();
+//    ui->pushButton_Delete_Area->setVisible(); //bool
+//    ui->pushButton_Delete_Area->show();
+//    ui->pushButton_Delete_Area->hide();
 
     ui->label_Units->setText("");
     ui->lineEdit_warning->setText("");
-    ui->lineEdit_Outcome->setText("");
 
     return true;
 }
@@ -320,10 +333,10 @@ bool RoomDimensionsGUI::buttonAreaDeleteClicked()
     ui->lineEdit_warning->setText("You removed a wall/area from the value.");
     ui->lineEdit_Outcome->setText(QString::number(deleteCalculations()));
     // Enables buttons needed.
-    ui->pushButton_delete_area->setEnabled(true);
-    ui->pushButton_cancel_delete->setEnabled(true);
-    ui->pushButton_coat_paint->setVisible(true);
-    ui->pushButton_delete_coat_paint->setVisible(true);
+    ui->pushButton_Delete_Area->setEnabled(true);
+    ui->pushButton_Cancel_Delete->setEnabled(true);
+    ui->pushButton_Coat_Paint->setVisible(true);
+    ui->pushButton_Delete_Coat_Paint->setVisible(true);
     return true;
 }
 
@@ -333,16 +346,15 @@ bool RoomDimensionsGUI::buttonAreaDeleteClicked()
 
 bool RoomDimensionsGUI::buttonCoatAddClicked()
 {
-
     // Setting UI text to correct units and setting a warning for user.
     ui->label_Units->setText("Litres");
     ui->lineEdit_warning->setText("You added another coat to the wall/area.");
     ui->lineEdit_Outcome->setText(QString::number(paintCoatCalculations()));
     // Enables buttons needed.
-    ui->pushButton_delete_area->setEnabled(true);
-    ui->pushButton_cancel_delete->setEnabled(true);
-    ui->pushButton_coat_paint->setVisible(true);
-    ui->pushButton_delete_coat_paint->setVisible(true);
+    ui->pushButton_Delete_Area->setEnabled(true);
+    ui->pushButton_Cancel_Delete->setEnabled(true);
+    ui->pushButton_Coat_Paint->setVisible(true);
+    ui->pushButton_Delete_Coat_Paint->setVisible(true);
     return true;
 }
 
@@ -358,10 +370,10 @@ bool RoomDimensionsGUI::buttonCoatDeleteClicked()
     ui->lineEdit_warning->setText("You deleted another coat from the wall/area.");
     ui->lineEdit_Outcome->setText(QString::number(paintCoatCalculations()));
     // Enables buttons needed.
-    ui->pushButton_delete_area->setEnabled(true);
-    ui->pushButton_cancel_delete->setEnabled(true);
-    ui->pushButton_coat_paint->setVisible(true);
-    ui->pushButton_delete_coat_paint->setVisible(true);
+    ui->pushButton_Delete_Area->setEnabled(true);
+    ui->pushButton_Cancel_Delete->setEnabled(true);
+    ui->pushButton_Coat_Paint->setVisible(true);
+    ui->pushButton_Delete_Coat_Paint->setVisible(true);
     return true;
 }
 
