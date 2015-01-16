@@ -13,11 +13,14 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        RoomDimensionsGUI.cpp
+        RoomDimensionsGUI.cpp \
+    dialogEditing.cpp
 
-HEADERS  += RoomDimensionsGUI.h
+HEADERS  += RoomDimensionsGUI.h \
+    dialogEditing.h
 
-FORMS    += RoomDimensionsGUI.ui
+FORMS    += RoomDimensionsGUI.ui \
+    editDialog.ui
 
 OTHER_FILES +=
 

@@ -28,39 +28,57 @@ private:
 
     /**
      * Gets user input from GUI.
-     * @return double
+     * @return double.
      */
     double userInputHeight();
 
     /**
      * Gets user input from GUI.
-     * @return double
+     * @return double.
      */
     double userInputLength();
 
     /**
      * Gets user input from GUI.
-     * @return double
+     * @return double.
      */
     double userInputWidth();
 
     /**
      * This is where calculations occur for area.
-     * @return double
+     * @return double.
      */
     double areaCalculations();
 
     /**
      * This is where calculations occur for volume.
-     * @return double
+     * @return double.
      */
     double volumeCalculations();
 
     /**
      * This is where calculations occur for amount of paint required.
-     * @return double
+     * @return double.
      */
     double paintCalculations();
+
+    /**
+     * This calculates the area to delete from a wall.
+     * @return double.
+     */
+    double deleteCalculations();
+
+    /**
+     * This calculates the outcome in lineEdit to add new coat.
+     * @return double.
+     */
+    double paintCoatCalculations();
+
+    /**
+     * This calculates the outcome in lineEdit to delete a coat.
+     * @return double.
+     */
+    double paintCoatDeleteCalculations();
 
 private slots:
 
@@ -87,6 +105,24 @@ private slots:
      * Return bool.
      */
     bool buttonCancelClicked();
+
+    /**
+     * When delete clicked sets text and gets value from calculations.
+     * @return bool.
+     */
+    bool buttonAreaDeleteClicked();
+
+    /**
+     * When this is clicked it adds new coat of paint to wall.
+     * @return bool.
+     */
+    bool buttonCoatAddClicked();
+
+    /**
+     * When this is clicked it deletes a coat from the wall.
+     * @return bool.
+     */
+    bool buttonCoatDeleteClicked();
 
     /**
      * This fetches file paths for backgrounds and iterates through them.
