@@ -15,11 +15,11 @@ TEMPLATE = app
 SOURCES += main.cpp\
         RoomDimensionsGUI.cpp \
     dialogEditing.cpp \
-    dialoUserSettings.cpp
+    dialogUserSettings.cpp
 
 HEADERS  += RoomDimensionsGUI.h \
     dialogEditing.h \
-    dialoUserSettings.h
+    dialogUserSettings.h
 
 FORMS    += RoomDimensionsGUI.ui \
     editDialog.ui \
